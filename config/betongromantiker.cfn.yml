@@ -43,6 +43,11 @@ Resources:
     DeletionPolicy: Retain
     Properties:
       Name: betongromantiker.se.
+  HostedZoneBetongromantikSe:
+    Type: AWS::Route53::HostedZone
+    DeletionPolicy: Retain
+    Properties:
+      Name: betongromantik.se.
   DnsRecords:
     Type: AWS::Route53::RecordSetGroup
     Properties:
@@ -63,6 +68,26 @@ Resources:
           TTL: 300
           ResourceRecords:
             - _a5bd106494f9adccf879b59d1f97575a.hkvuiqjoua.acm-validations.aws.
+  DnsRecordsBetongromantikSe:
+    Type: AWS::Route53::RecordSetGroup
+    Properties:
+      HostedZoneId: !Ref HostedZoneBetongromantikSe
+      RecordSets:
+        - Name: betongromantik.se.
+          Type: A
+          AliasTarget:
+            HostedZoneId: Z2FDTNDATAQYW2
+            DNSName: !GetAtt Distribution.DomainName
+        - Name: www.betongromantik.se.
+          Type: A
+          AliasTarget:
+            HostedZoneId: Z2FDTNDATAQYW2
+            DNSName: !GetAtt Distribution.DomainName
+        - Name: _d33f76d1fe0d3906caec3039936c7d28.betongromantik.se.
+          Type: CNAME
+          TTL: 300
+          ResourceRecords:
+            - _5507adaa324ac71122fba0e38b2d306b.duyqrilejt.acm-validations.aws.
   GoogleAppsRecords:
     Type: AWS::Route53::RecordSetGroup
     Properties:
@@ -74,6 +99,25 @@ Resources:
           ResourceRecords:
             - '"google-site-verification=_nmDxWH8k53cwJDda9edFPl4cu0suQMEg0NVwLBUICw."'
         - Name: betongromantiker.se.
+          Type: MX
+          TTL: 300
+          ResourceRecords:
+            - '1 aspmx.l.google.com.'
+            - '5 alt1.aspmx.l.google.com.'
+            - '5 alt2.aspmx.l.google.com.'
+            - '10 aspmx2.googlemail.com.'
+            - '10 aspmx3.googlemail.com.'
+  GoogleAppsRecordsBetongromantikSe:
+    Type: AWS::Route53::RecordSetGroup
+    Properties:
+      HostedZoneId: !Ref HostedZoneBetongromantikSe
+      RecordSets:
+        - Name: betongromantik.se.
+          Type: TXT
+          TTL: 300
+          ResourceRecords:
+            - '"google-site-verification=74tK3f3YgROBpsrC8fEJQbMPpWzVPRo9QC_1KJXcjq4"'
+        - Name: betongromantik.se.
           Type: MX
           TTL: 300
           ResourceRecords:
