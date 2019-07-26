@@ -1,0 +1,84 @@
+AWSTemplateFormatVersion: 2010-09-09
+Resources:
+  Bucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
+    Properties:
+      BucketName: betongromantiker.se
+      WebsiteConfiguration:
+        IndexDocument: index.html
+        ErrorDocument: error.html
+  Distribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Enabled: true
+        Origins:
+          - DomainName: betongromantiker.se.s3-website-eu-west-1.amazonaws.com
+            Id: betongromantiker-s3
+            CustomOriginConfig:
+              OriginProtocolPolicy: http-only
+        Comment: Hosting of betongromantiker.se
+        Aliases:
+          - betongromantiker.se
+          - www.betongromantiker.se
+        ViewerCertificate:
+          AcmCertificateArn: arn:aws:acm:us-east-1:113542831511:certificate/a85a1174-9020-4f37-982b-ed5492468516
+          SslSupportMethod: sni-only
+          MinimumProtocolVersion: TLSv1.2_2018
+        DefaultCacheBehavior:
+          TargetOriginId: betongromantiker-s3
+          ForwardedValues:
+            QueryString: false
+            Cookies:
+              Forward: none
+          ViewerProtocolPolicy: allow-all
+        PriceClass: PriceClass_100
+        HttpVersion: http2
+        Logging:
+          Bucket: !Sub 'iconara-s3-${AWS::Region}.s3.amazonaws.com'
+          Prefix: logs/iconara.net/
+  HostedZone:
+    Type: AWS::Route53::HostedZone
+    DeletionPolicy: Retain
+    Properties:
+      Name: betongromantiker.se.
+  DnsRecords:
+    Type: AWS::Route53::RecordSetGroup
+    Properties:
+      HostedZoneId: !Ref HostedZone
+      RecordSets:
+        - Name: betongromantiker.se.
+          Type: A
+          AliasTarget:
+            HostedZoneId: Z2FDTNDATAQYW2
+            DNSName: !GetAtt Distribution.DomainName
+        - Name: www.betongromantiker.se.
+          Type: A
+          AliasTarget:
+            HostedZoneId: Z2FDTNDATAQYW2
+            DNSName: !GetAtt Distribution.DomainName
+        - Name: _735dfd225651742e14fdd741870a415f.betongromantiker.se.
+          Type: CNAME
+          TTL: 300
+          ResourceRecords:
+            - _a5bd106494f9adccf879b59d1f97575a.hkvuiqjoua.acm-validations.aws.
+  GoogleAppsRecords:
+    Type: AWS::Route53::RecordSetGroup
+    Properties:
+      HostedZoneId: !Ref HostedZone
+      RecordSets:
+        - Name: betongromantiker.se.
+          Type: TXT
+          TTL: 300
+          ResourceRecords:
+            - '"google-site-verification=_nmDxWH8k53cwJDda9edFPl4cu0suQMEg0NVwLBUICw."'
+        - Name: betongromantiker.se.
+          Type: MX
+          TTL: 300
+          ResourceRecords:
+            - '1 aspmx.l.google.com.'
+            - '5 alt1.aspmx.l.google.com.'
+            - '5 alt2.aspmx.l.google.com.'
+            - '10 aspmx2.googlemail.com.'
+            - '10 aspmx3.googlemail.com.'
