@@ -22,8 +22,10 @@ Resources:
         Aliases:
           - betongromantiker.se
           - www.betongromantiker.se
+          - betongromantik.se
+          - www.betongromantik.se
         ViewerCertificate:
-          AcmCertificateArn: arn:aws:acm:us-east-1:113542831511:certificate/a85a1174-9020-4f37-982b-ed5492468516
+          AcmCertificateArn: arn:aws:acm:us-east-1:113542831511:certificate/6e84e648-2b8c-48e5-8430-fba457042153
           SslSupportMethod: sni-only
           MinimumProtocolVersion: TLSv1.2_2018
         DefaultCacheBehavior:
