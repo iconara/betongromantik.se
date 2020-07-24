@@ -3,6 +3,7 @@ Resources:
   Bucket:
     Type: AWS::S3::Bucket
     DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
     Properties:
       BucketName: betongromantiker.se
       WebsiteConfiguration:
@@ -47,21 +48,25 @@ Resources:
   HostedZone:
     Type: AWS::Route53::HostedZone
     DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
     Properties:
       Name: betongromantiker.se.
   HostedZoneBetongromantikSe:
     Type: AWS::Route53::HostedZone
     DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
     Properties:
       Name: betongromantik.se.
   HostedZoneConcreteromanticCom:
     Type: AWS::Route53::HostedZone
     DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
     Properties:
       Name: concreteromantic.com.
   HostedZoneConcreteromanceCom:
     Type: AWS::Route53::HostedZone
     DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
     Properties:
       Name: concreteromance.com.
   DnsRecords:
@@ -81,7 +86,7 @@ Resources:
             DNSName: !GetAtt Distribution.DomainName
         - Name: _735dfd225651742e14fdd741870a415f.betongromantiker.se.
           Type: CNAME
-          TTL: 300
+          TTL: '300'
           ResourceRecords:
             - _a5bd106494f9adccf879b59d1f97575a.hkvuiqjoua.acm-validations.aws.
   DnsRecordsBetongromantikSe:
@@ -101,7 +106,7 @@ Resources:
             DNSName: !GetAtt Distribution.DomainName
         - Name: _d33f76d1fe0d3906caec3039936c7d28.betongromantik.se.
           Type: CNAME
-          TTL: 300
+          TTL: '300'
           ResourceRecords:
             - _5507adaa324ac71122fba0e38b2d306b.duyqrilejt.acm-validations.aws.
   DnsRecordsConcreteromanticCom:
@@ -121,7 +126,7 @@ Resources:
             DNSName: !GetAtt Distribution.DomainName
         - Name: _3dbef25c1bd728c99dcfe70838266308.concreteromantic.com.
           Type: CNAME
-          TTL: 300
+          TTL: '300'
           ResourceRecords:
             - _7def4b61af074fd175b0ab504978e5f3.duyqrilejt.acm-validations.aws.
   DnsRecordsConcreteromanceCom:
@@ -141,7 +146,7 @@ Resources:
             DNSName: !GetAtt Distribution.DomainName
         - Name: _eb941b63d515cc5fb2fe76b6f0ff3274.concreteromance.com.
           Type: CNAME
-          TTL: 300
+          TTL: '300'
           ResourceRecords:
             - _7def4b61af074fd175b0ab504978e5f3.duyqrilejt.acm-validations.aws.
   GoogleAppsRecords:
@@ -151,12 +156,12 @@ Resources:
       RecordSets:
         - Name: betongromantiker.se.
           Type: TXT
-          TTL: 300
+          TTL: '300'
           ResourceRecords:
             - '"google-site-verification=_nmDxWH8k53cwJDda9edFPl4cu0suQMEg0NVwLBUICw."'
         - Name: betongromantiker.se.
           Type: MX
-          TTL: 300
+          TTL: '300'
           ResourceRecords:
             - '1 aspmx.l.google.com.'
             - '5 alt1.aspmx.l.google.com.'
@@ -170,12 +175,12 @@ Resources:
       RecordSets:
         - Name: betongromantik.se.
           Type: TXT
-          TTL: 300
+          TTL: '300'
           ResourceRecords:
             - '"google-site-verification=74tK3f3YgROBpsrC8fEJQbMPpWzVPRo9QC_1KJXcjq4"'
         - Name: betongromantik.se.
           Type: MX
-          TTL: 300
+          TTL: '300'
           ResourceRecords:
             - '1 aspmx.l.google.com.'
             - '5 alt1.aspmx.l.google.com.'
