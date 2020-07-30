@@ -148,7 +148,7 @@ Resources:
           Type: CNAME
           TTL: '300'
           ResourceRecords:
-            - _7def4b61af074fd175b0ab504978e5f3.duyqrilejt.acm-validations.aws.
+            - _6fc62e21247271ca80557716026a17ef.duyqrilejt.acm-validations.aws.
   GoogleAppsRecords:
     Type: AWS::Route53::RecordSetGroup
     Properties:
