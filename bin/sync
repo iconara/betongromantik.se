@@ -1,10 +1,29 @@
 #!/usr/bin/env bash
 
-DISTRIBUTION_ID='E1ALJF3J9QE83L'
-S3_URI='s3://betongromantiker.se/'
+set -euo pipefail
 
-cd "$(dirname $0)/../public" || exit 1
+cd "$(dirname $0)/.." || exit 1
 
-aws s3 sync --acl public-read --exclude '*/.DS_Store' . "$S3_URI"
+aws_region=$(perl -ne '/region\s*=\s*"(.+?)"/ && print $1' < samconfig.toml)
+stack_name=$(perl -ne '/stack_name\s*=\s*"(.+?)"/ && print $1' < samconfig.toml)
+resource_ids=$(aws cloudformation describe-stack-resources \
+  --region "$aws_region" \
+  --stack-name "$stack_name" \
+  --query "StackResources[?LogicalResourceId == 'Bucket' || LogicalResourceId == 'Distribution'].PhysicalResourceId" \
+  --output text)
+bucket_name=$(echo "$resource_ids" | cut -f 1)
+distribution_id=$(echo "$resource_ids" | cut -f 2)
 
-aws cloudfront create-invalidation --distribution-id "$DISTRIBUTION_ID" --paths '/*'
+aws s3 sync \
+  --acl public-read \
+  --include '*' \
+  --exclude '.DS_Store' \
+  --exclude '*/.DS_Store' \
+  --exclude '.gitignore' \
+  --exclude '*/.gitignore' \
+  'dist' \
+  "s3://$bucket_name/"
+
+aws cloudfront create-invalidation \
+  --distribution-id "$distribution_id" \
+  --paths '/*'
