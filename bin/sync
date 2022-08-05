@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+DISTRIBUTION_ID='E1ALJF3J9QE83L'
+S3_URI='s3://betongromantiker.se/'
+
+cd "$(dirname $0)/../public" || exit 1
+
+aws s3 sync --acl public-read --exclude '*/.DS_Store' . "$S3_URI"
+
+aws cloudfront create-invalidation --distribution-id "$DISTRIBUTION_ID" --paths '/*'
