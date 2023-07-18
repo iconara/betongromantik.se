@@ -1,0 +1,27 @@
+body {
+  background: var(--betongromantik-background);
+  color: var(--betongromantik-text);
+  overflow-x: hidden;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: [header-row] 10dvh [content-row] 1fr [footer-row] 2em;
+  column-gap: 1em;
+  row-gap: 1em;
+}
+
+header {
+  grid-row: header-row;
+}
+
+main {
+  grid-row: content-row;
+}
+
+footer {
+  grid-row: footer-row;
+}
+
+a {
+  text-decoration: none;
+  color: var(--betongromantik-link);
+}

@@ -1,0 +1,28 @@
+.header {
+  padding-inline: 1em;
+  padding-top: 1em;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.logo {
+  block-size: 100%;
+}
+
+.navigation {
+  display: flex;
+  flex-direction: row;
+  align-items: end;
+  font-size: 200%;
+  text-transform: uppercase;
+}
+
+.navigation a {
+  margin-inline-start: 0.5em;
+  color: var(--betongromantik-text);
+}
+
+.navigation a:hover {
+  color: var(--betongromantik-link);
+}

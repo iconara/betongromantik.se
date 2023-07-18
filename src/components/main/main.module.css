@@ -1,0 +1,10 @@
+.banner {
+  margin-inline: 1em;
+  width: calc(100% - 2em);
+  height: 100%;
+  background: image-set(
+    url(../../media/main/20201025-DSCF9644-1x.jpg) 1x,
+    url(../../media/main/20201025-DSCF9644-2x.jpg) 2x)
+    no-repeat center;
+  background-size: cover;
+}

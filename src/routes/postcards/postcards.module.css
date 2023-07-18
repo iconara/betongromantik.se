@@ -1,0 +1,94 @@
+.container {
+  padding-inline: 1em;
+}
+
+.container h1 {
+  margin: 0;
+  margin-block-end: 0.15em;
+  font-weight: normal;
+  font-size: 400%;
+  text-transform: uppercase;
+}
+
+.container section {
+  margin-block-end: 4em;
+}
+
+.intro p {
+  font-size: 150%;
+}
+
+.postcard-series {
+  display: flex;
+  flex-direction: row;
+  align-items: start;
+}
+
+.postcard-series-meta {
+  width: 20em;
+  padding-inline-end: 1em;
+  flex-shrink: 0;
+  flex-grow: 0;
+}
+
+.postcard-series-meta h2 {
+  margin: 0;
+  margin-block-end: 0.15em;
+  font-weight: normal;
+  font-size: 300%;
+  text-transform: uppercase;
+}
+
+.postcard-series-meta h3 {
+  margin: 0;
+  margin-block-end: 0.3em;
+  font-weight: normal;
+  font-size: 150%;
+}
+
+.postcard-series-meta p {
+  margin: 0;
+  margin-block-end: 1em;
+}
+
+.postcards {
+  flex-grow: 1;
+  flex-shrink: 1;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(20em, 1fr));
+  column-gap: 1em;
+  row-gap: 1em;
+}
+
+.postcard {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  cursor: help;
+}
+
+.postcard img {
+  width: 100%;
+  height: 100%;
+}
+
+.selected {
+  opacity: 0.25;
+}
+
+.postcard-description {
+  padding: 1em;
+  position: absolute;
+  top: 0;
+}
+
+@media (max-width: 1100px) {
+  .postcard-series {
+    flex-direction: column;
+  }
+
+  .postcards {
+    width: 100%;
+    grid-template-columns: repeat(auto-fill, minmax(10em, 1fr));
+  }
+}
