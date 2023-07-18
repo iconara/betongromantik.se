@@ -26,3 +26,7 @@
 .navigation a:hover {
   color: var(--betongromantik-link);
 }
+
+.selected {
+  text-decoration: underline;
+}
