@@ -1,8 +1,9 @@
-import {component$, useResource$, Resource, useSignal} from '@builder.io/qwik'
-import type {PropFunction} from '@builder.io/qwik'
+import {component$, useSignal, type PropFunction} from '@builder.io/qwik'
 import type {DocumentHead} from '@builder.io/qwik-city'
-import {useLocation} from '@builder.io/qwik-city'
 import styles from './postcards.module.css'
+import postcards from '~/media/postcards.json'
+
+const POSTCARD_SERIES = (postcards as PostcardSeries[]).sort((a, b) => b.id.localeCompare(a.id))
 
 export const head: DocumentHead = {
   title: 'Vykort',
@@ -76,13 +77,6 @@ const PostcardSeriesDisplay = component$<PostcardSeriesDisplayProps>(({postcardS
 })
 
 export default component$(() => {
-  const location = useLocation()
-  const postcardSeriesResource = useResource$<PostcardSeries[]>(async () => {
-    const response = await fetch(`${location.url.origin}/postcards/meta.json`)
-    const postcardMeta = await response.json() as PostcardSeries[]
-    postcardMeta.sort((a, b) => b.id.localeCompare(a.id))
-    return postcardMeta
-  })
   return (
     <div class={styles.container}>
       <section class={styles.intro}>
@@ -92,16 +86,9 @@ export default component$(() => {
           klicka på bilderna för att läsa mer om vad de föreställer.
         </p>
       </section>
-      <Resource
-        value={postcardSeriesResource}
-        onResolved={
-          (allPostcardSeries) => {
-            return (<>
-              {allPostcardSeries.map((postcardSeries) =>
-                (<PostcardSeriesDisplay key={postcardSeries.id} postcardSeries={postcardSeries} />)
-              )}
-            </>)
-          }} />
+      {POSTCARD_SERIES.map((postcardSeries) =>
+        (<PostcardSeriesDisplay key={postcardSeries.id} postcardSeries={postcardSeries} />)
+      )}
     </div>
   )
 })
