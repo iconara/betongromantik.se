@@ -1,7 +1,7 @@
 .container {
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: space-evenly;
   align-items: center;
   flex-wrap: wrap;
 }
@@ -21,4 +21,10 @@
 
 .container section p {
   font-size: 200%;
+}
+
+@media (max-width: 1300px) {
+  .container section img {
+    width: 60dvw;
+  }
 }
