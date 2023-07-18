@@ -44,7 +44,7 @@ const PostcardDisplay = component$<PostcardDisplayProps>(({postcardSeries, postc
         width="100"
         height="100"
         alt={postcard.description} />
-      {showDescription && <div class={styles['postcard-description']}>{postcard.description}</div>}
+      {showDescription && <div class={styles['postcard-description']}><span>{postcard.description}</span></div>}
     </div>
   )
 })
