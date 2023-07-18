@@ -5,10 +5,10 @@
     "release": "Sommaren 2018",
     "description": "Bilder från Bungenäs, 2016–2018",
     "images": [
-      {"id": "20160718-DSCF8732", "description": "Ett ensamt lamm på kanten till kalkbrottet"},
+      {"id": "20160718-DSCF8732", "description": "Siluetten av ett ensamt lamm på kanten till kalkbrottet"},
       {"id": "20170721-DSCF7814-Edit", "description": "Kalkbrottet en sommardag"},
       {"id": "20170722-IMG_1982", "description": "Reflektioner i vattnet vid badplatsen"},
-      {"id": "20170806-DSCF8825", "description": "Bunker 22:34 i solnedgången, längst ut på udden"},
+      {"id": "20170806-DSCF8825", "description": "Bunker 22:34, längst ute på udden"},
       {"id": "20180323-DSCF8810", "description": "Mynningen till den gamla transporttunneln en vinterdag"}
     ]
   },
@@ -18,12 +18,12 @@
     "release": "Våren 2019",
     "description": "Bilder från norra Gotland, 2016–2018",
     "images": [
-      {"id": "20160718-DSCF8694", "description": "Siluetterna av lamm på kanten till Bungenäs kalkbrott"},
-      {"id": "20170325-DSCF9686", "description": "Förfallen bod vid kalkbrottet i Bläse"},
-      {"id": "20180810-DSCF1599", "description": "Vraket av Fortuna på Norsholmen på Fårö"},
-      {"id": "20180812-DSCF1956-2", "description": "Ett vindkraftverk vid väg 149 i solnedgången"},
-      {"id": "20181012-DSCF2790", "description": "Siluetterna av två tallar i Bungeviken i solnedgången"},
-      {"id": "20181013-DSCF2843", "description": "Resterna av fyren i hamnen på Bungenäs"}
+      {"id": "20160718-DSCF8694", "description": "Siluetterna av tre lamm på kanten till Bungenäs kalkbrott"},
+      {"id": "20170325-DSCF9686", "description": "En förfallen bod vid kalkbrottet i Bläse"},
+      {"id": "20180810-DSCF1599", "description": "Vraket av Fortuna längst ut på Norsholmen på norra Fårö"},
+      {"id": "20180812-DSCF1956-2", "description": "Ett vindkraftverk vid väg 149"},
+      {"id": "20181012-DSCF2790", "description": "Siluetterna av två tallar i Bungeviken"},
+      {"id": "20181013-DSCF2843", "description": "Resterna av den gamla fyren i hamnen på Bungenäs"}
     ]
   },
   {
@@ -32,8 +32,8 @@
     "release": "Våren 2019",
     "description": "Bilder från norra Gotland, 2016–2018",
     "images": [
-      {"id": "20180818-DSCF2170", "description": "Kvarnen i Fårösund i solnedgången"},
-      {"id": "20160718-DSCF8702", "description": "Siluetterna av lamm på kanten till Bungenäs kalkbrott"},
+      {"id": "20180818-DSCF2170", "description": "Väderkvarnen i Fårösund"},
+      {"id": "20160718-DSCF8702", "description": "Siluetterna av tre lamm på kanten till Bungenäs kalkbrott"},
       {"id": "20170327-DSCF0602", "description": "Visby ringmur i soluppgången"},
       {"id": "20180328-DSCF3847", "description": "Kranen i hamnen i Bläse"},
       {"id": "20180726-DSCF0469", "description": "En bod i Ojnareskogen"}
@@ -45,12 +45,12 @@
     "release": "Sommaren 2022 & 2023",
     "description": "Bilder från Bungenäs, 2018–2022",
     "images": [
-      {"id": "20180805-DSCF1289", "description": "Kalkugnarna"},
+      {"id": "20180805-DSCF1289", "description": "Kalkugnarna på Bungenäs"},
       {"id": "20190616-DSCF2096", "description": "Skyttegrav och vårblommor i månsken"},
       {"id": "20200822-DSCF6126", "description": "Lamm bråkar på piren"},
-      {"id": "20210825-DSCF8223", "description": "Vy över brottet"},
-      {"id": "20210828-DSCF8272", "description": "Nyströms"},
-      {"id": "20211014-DSCF0361", "description": "Lamm i motljus i soluppgången"},
+      {"id": "20210825-DSCF8223", "description": "Vägen slingrar sig igenom kalkbrottet"},
+      {"id": "20210828-DSCF8272", "description": "Gamla Konsum på Bungenäs"},
+      {"id": "20211014-DSCF0361", "description": "Lamm i motljus"},
       {"id": "20220416-DSCF8143", "description": "Månen går upp bakom fyren på Bungeör"}
     ]
   }
