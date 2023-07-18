@@ -40,7 +40,7 @@ const PostcardDisplay = component$<PostcardDisplayProps>(({postcardSeries, postc
     <div class={styles.postcard} onClick$={selectedHandler}>
       <img
         class={showDescription ? styles.selected : undefined}
-        src={`/postcards/${postcardSeries.id}/${postcard.id}-sm.jpg`}
+        src={`/vykort/${postcardSeries.id}/${postcard.id}-sm.jpg`}
         width="100"
         height="100"
         alt={postcard.description} />

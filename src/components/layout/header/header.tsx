@@ -10,7 +10,7 @@ export default component$(() => {
         <BetongromantikLogo class={styles.logo} />
       </Link>
       <nav class={styles.navigation}>
-        <Link href="/postcards">Vykort</Link>
+        <Link href="/vykort">Vykort</Link>
         <Link href="/instagram">Instagram</Link>
       </nav>
     </header>
