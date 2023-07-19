@@ -44,7 +44,7 @@ Resources:
         HttpVersion: http2
         Logging:
           Bucket: !Sub 'iconara-s3-${AWS::Region}.s3.amazonaws.com'
-          Prefix: logs/iconara.net/
+          Prefix: logs/betongromantiker.se/
   HostedZone:
     Type: AWS::Route53::HostedZone
     DeletionPolicy: Retain
