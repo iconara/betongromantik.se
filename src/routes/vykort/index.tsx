@@ -41,8 +41,6 @@ const PostcardDisplay = component$<PostcardDisplayProps>(({postcardSeries, postc
       <img
         class={showDescription ? styles.selected : undefined}
         src={`/vykort/${postcardSeries.id}/${postcard.id}-sm.jpg`}
-        width="100"
-        height="100"
         alt={postcard.description} />
       {showDescription && <div class={styles['postcard-description']}><span>{postcard.description}</span></div>}
     </div>
