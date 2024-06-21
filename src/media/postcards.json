@@ -53,5 +53,21 @@
       {"id": "20211014-DSCF0361", "description": "Lamm i motljus"},
       {"id": "20220416-DSCF8143", "description": "Månen går upp bakom fyren på Bungeör"}
     ]
+  },
+  {
+    "id": "gotland05",
+    "name": "Gotland V",
+    "release": "Sommaren 2024",
+    "description": "Bilder från Bungenäs norra Gotland, 2018–2023",
+    "images": [
+      {"id": "20180811-DSCF8173", "description": "Roddbåt vid Grostäde fiskeläge"},
+      {"id": "20190620-DSCF2271", "description": "Betongblock bland försommarblommor på Bungenäs"},
+      {"id": "20200613-DSCF4099", "description": "Fåglar på staketet längs brottkanten på Bungenäs"},
+      {"id": "20200925-DSCF7864-E", "description": "Tre lamm i dimman på Bungenäs"},
+      {"id": "20210828-DSCF8272", "description": "Gamla Konsum på Bungenäs"},
+      {"id": "20221015-DSCF6546", "description": "Kalkugnen på Bungenäs"},
+      {"id": "20230731-DSCF2133", "description": "Fyren på Bungeör"},
+      {"id": "20231022-DSCF4381", "description": "Lurigt lamm på Bungenäs"}
+    ]
   }
 ]
