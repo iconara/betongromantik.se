@@ -41,9 +41,8 @@ function Analytics() {
       const url = createAnalyticsUrl(doc, sessionId.current, location.pathname)
       if (navigator.sendBeacon !== undefined) {
         navigator.sendBeacon(url)
-      } else {
-        sendBeaconFallback(doc, url)
       }
+      sendBeaconFallback(doc, url)
     }
   }, [location, sessionId, elementRef])
   return (
