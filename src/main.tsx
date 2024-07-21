@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import {createBrowserRouter, RouterProvider} from 'react-router-dom'
-import Main from './pages/Main.tsx'
+import Main from './layouts/Main.tsx'
 import Home from './pages/Home.tsx'
 import Error from './pages/Error.tsx'
 import Postcards from './pages/Postcards.tsx'
@@ -10,20 +10,19 @@ import './index.css'
 
 const router = createBrowserRouter([
   {
-    path: '/',
     element: <Main/>,
     errorElement: <Error/>,
     children: [
       {
-        path: '',
+        path: '/',
         element: <Home/>,
       },
       {
-        path: 'vykort',
+        path: '/vykort',
         element: <Postcards/>,
       },
       {
-        path: 'instagram',
+        path: '/instagram',
         element: <Instagram/>,
       },
     ],
