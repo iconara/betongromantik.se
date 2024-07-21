@@ -1,4 +1,5 @@
 import {Link, NavLink, Outlet} from 'react-router-dom'
+import Analytics from '../components/Analytics'
 import Logo from '../media/betongromantik.svg'
 
 function Main() {
@@ -17,6 +18,7 @@ function Main() {
       <footer>
         &copy; Theo Tolv 2016–{new Date().getUTCFullYear()}
       </footer>
+      <Analytics/>
     </>
   )
 }
