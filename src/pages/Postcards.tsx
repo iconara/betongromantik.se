@@ -15,11 +15,19 @@ type PostcardInfo = {
   description: string
 }
 
-function Postcard(series: PostcardSeries, postcard: PostcardInfo) {
-  const [selected, setSelected] = useState(false)
-  const toggleSelected = () => setSelected(!selected)
+type PostcardProps = {
+  series: PostcardSeries
+  postcard: PostcardInfo
+  selected: boolean
+  onSelected: (p: PostcardInfo | undefined) => void
+}
+
+function Postcard({series, postcard, selected, onSelected}: PostcardProps) {
+  function toggleSelected() {
+    onSelected(selected ? undefined : postcard)
+  }
   return (
-    <div key={postcard.id} className={["postcard", selected ? "selected" : undefined].join(" ")}>
+    <div className={`postcard ${selected && 'selected'}`}>
       <figure onClick={toggleSelected}>
         <img src={`/vykort/${series.id}/${postcard.id}-sm.jpg`} alt={postcard.description}/>
         <figcaption>{postcard.description}</figcaption>
@@ -28,16 +36,32 @@ function Postcard(series: PostcardSeries, postcard: PostcardInfo) {
   )
 }
 
-function PostcardSeries(series: PostcardSeries) {
+type PostcardSelectionEvent = {
+  series: PostcardSeries
+  postcard: PostcardInfo
+}
+
+type PostcardSeriesProps = {
+  series: PostcardSeries
+  selectedPostcard: PostcardInfo | undefined
+  onPostcardSelected: (e: PostcardSelectionEvent | undefined) => void
+}
+
+function PostcardSeries({series, selectedPostcard, onPostcardSelected}: PostcardSeriesProps) {
   return (
-    <section key={series.id} className="series">
+    <section className="series">
       <div className="details">
         <h2>{series.name}</h2>
         <h3>{series.release}</h3>
         <p>{series.description}</p>
       </div>
       <div className="images">
-        {series.images.map((postcard) => Postcard(series, postcard))}
+        {series.images.map((postcard) => (
+          <Postcard key={postcard.id}
+                    series={series}
+                    postcard={postcard}
+                    selected={selectedPostcard === postcard}
+                    onSelected={(postcard) => onPostcardSelected(postcard !== undefined ? {series, postcard} : undefined)}/>))}
       </div>
     </section>
   )
@@ -45,6 +69,7 @@ function PostcardSeries(series: PostcardSeries) {
 
 function Postcards() {
   const postcards = POSTCARDS.slice().reverse()
+  const [selectedPostcard, setSelectedPostcard] = useState(undefined as PostcardSelectionEvent | undefined)
   return (
     <div className="postcards">
       <h1>Vykort</h1>
@@ -52,7 +77,11 @@ function Postcards() {
         Sen 2018 har jag gjort vykort med motiv från norra Gotland. Här hittar du alla motiv, klicka på bilderna för att läsa mer om vad de föreställer.
       </p>
       <div className="gallery">
-        {postcards.map(PostcardSeries)}
+        {postcards.map((series) => (
+          <PostcardSeries key={series.id}
+                          series={series}
+                          selectedPostcard={selectedPostcard?.series === series ? selectedPostcard.postcard : undefined}
+                          onPostcardSelected={setSelectedPostcard}/>))}
       </div>
     </div>
   )
