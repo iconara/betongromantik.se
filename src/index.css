@@ -37,7 +37,7 @@ body {
   grid-template-columns: 1fr;
   grid-template-rows: [header-row] minmax(10rem, 10dvh)
                       [content-row] 1fr
-                      [footer-row] 2em;
+                      [footer-row] 1em;
   column-gap: 1em;
   row-gap: 1em;
 }
