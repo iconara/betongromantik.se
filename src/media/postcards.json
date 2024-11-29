@@ -69,5 +69,18 @@
       {"id": "20230731-DSCF2133", "description": "Fyren på Bungeör"},
       {"id": "20231022-DSCF4381", "description": "Lurigt lamm på Bungenäs"}
     ]
+  },
+  {
+    "id": "stockholm01",
+    "name": "Stockholm 1",
+    "release": "Vintern 2024",
+    "description": "Bilder från Stockholm, 2020–2023",
+    "images": [
+      {"id": "20200213-DSCF9490", "description": "Waterfront i solnedgången"},
+      {"id": "20201025-DSCF9644", "description": "Skanstullsbron underifrån"},
+      {"id": "20210131-DSCF1516", "description": "Snöklädda tak runt Gullmarsplan"},
+      {"id": "20220210-DSCF3324", "description": "Globen och Tele2 arena"},
+      {"id": "20231130-DSCF5109", "description": "Betongtrappan vid Rosenlunds sjukhus"}
+    ]
   }
 ]

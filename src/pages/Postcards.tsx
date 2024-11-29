@@ -74,7 +74,7 @@ function Postcards() {
     <div className="postcards">
       <h1>Vykort</h1>
       <p>
-        Sen 2018 har jag gjort vykort med motiv från norra Gotland. Här hittar du alla motiv, klicka på bilderna för att läsa mer om vad de föreställer.
+        Sen 2018 har jag gjort vykort med motiv från norra Gotland, och sedan 2024 också Stockholm. Här hittar du alla motiv, klicka på bilderna för att läsa mer om vad de föreställer.
       </p>
       <div className="gallery">
         {postcards.map((series) => (
