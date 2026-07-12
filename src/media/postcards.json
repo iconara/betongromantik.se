@@ -46,11 +46,11 @@
     "description": "Bilder från Bungenäs, 2018–2022",
     "images": [
       {"id": "20180805-DSCF1289", "description": "Kalkugnarna på Bungenäs"},
-      {"id": "20190616-DSCF2096", "description": "Skyttegrav och vårblommor i månsken"},
-      {"id": "20200822-DSCF6126", "description": "Lamm bråkar på piren"},
-      {"id": "20210825-DSCF8223", "description": "Vägen slingrar sig igenom kalkbrottet"},
+      {"id": "20190616-DSCF2096", "description": "Skyttegrav och vårblommor i månsken på Bungenäs"},
+      {"id": "20200822-DSCF6126", "description": "Lamm bråkar på piren på Bungenäs"},
+      {"id": "20210825-DSCF8223", "description": "Vägen slingrar sig genom Bungenäs kalkbrott"},
       {"id": "20210828-DSCF8272", "description": "Gamla Konsum på Bungenäs"},
-      {"id": "20211014-DSCF0361", "description": "Lamm i motljus"},
+      {"id": "20211014-DSCF0361", "description": "Lamm i motljus på Bungenäs"},
       {"id": "20220416-DSCF8143", "description": "Månen går upp bakom fyren på Bungeör"}
     ]
   },
@@ -58,7 +58,7 @@
     "id": "gotland05",
     "name": "Gotland V",
     "release": "Sommaren 2024",
-    "description": "Bilder från Bungenäs norra Gotland, 2018–2023",
+    "description": "Bilder från Bungenäs och norra Gotland, 2018–2023",
     "images": [
       {"id": "20180811-DSCF8173", "description": "Roddbåt vid Grostäde fiskeläge"},
       {"id": "20190620-DSCF2271", "description": "Betongblock bland försommarblommor på Bungenäs"},
@@ -81,6 +81,21 @@
       {"id": "20210131-DSCF1516", "description": "Snöklädda tak runt Gullmarsplan"},
       {"id": "20220210-DSCF3324", "description": "Globen och Tele2 arena"},
       {"id": "20231130-DSCF5109", "description": "Betongtrappan vid Rosenlunds sjukhus"}
+    ]
+  },
+  {
+    "id": "gotland06",
+    "name": "Gotland VI",
+    "release": "Sommaren 2026",
+    "description": "Bilder från Bungenäs och norra Gotland, 2019–2025",
+    "images": [
+      {"id": "20190608-DSCF1088", "description": "Kaffepannan vid gamla hamn på Fårö"},
+      {"id": "20200822-DSCF6095", "description": "Konfunderat lamm på piren på Bungenäs"},
+      {"id": "20220418-DSCF8275", "description": "Tre kajor landar på brottkanten på Bungenäs"},
+      {"id": "20240716-DSCF9805", "description": "Langhammarsgubben på Fårö"},
+      {"id": "20240729-DSCF6625", "description": "Fiskebod i Själsö"},
+      {"id": "20250607-DSCF6907", "description": "Tallar vid stranden i Bungeviken"},
+      {"id": "20250819-DSCF8954", "description": "Svala över kalkugnarna på Bungenäs"}
     ]
   }
 ]
