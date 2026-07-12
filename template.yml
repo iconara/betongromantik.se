@@ -1,4 +1,5 @@
 AWSTemplateFormatVersion: 2010-09-09
+
 Resources:
   Bucket:
     Type: AWS::S3::Bucket
@@ -9,14 +10,38 @@ Resources:
       WebsiteConfiguration:
         IndexDocument: index.html
         ErrorDocument: error.html
+
+  StagingBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      BucketName: staging.betongromantiker.se
+
+  StagingBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref StagingBucket
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Action: s3:GetObject
+          Principal:
+            Service: cloudfront.amazonaws.com
+          Resource: !Sub '${StagingBucket.Arn}/*'
+          Condition:
+            StringEquals:
+              AWS:SourceArn: !Sub 'arn:aws:cloudfront::${AWS::AccountId}:distribution/${StagingDistribution}'
+
   Distribution:
     Type: AWS::CloudFront::Distribution
     Properties:
       DistributionConfig:
         Enabled: true
         Origins:
-          - DomainName: betongromantiker.se.s3-website-eu-west-1.amazonaws.com
-            Id: betongromantiker-s3
+          - Id: betongromantiker-s3
+            DomainName: betongromantiker.se.s3-website-eu-west-1.amazonaws.com
             CustomOriginConfig:
               OriginProtocolPolicy: http-only
         Comment: Hosting of betongromantiker.se
@@ -45,30 +70,101 @@ Resources:
         Logging:
           Bucket: !Sub 'iconara-s3-${AWS::Region}.s3.amazonaws.com'
           Prefix: logs/betongromantiker.se/
+
+  StagingDistribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Enabled: true
+        Origins:
+          - Id: betongromantiker-staging-s3
+            DomainName: !Sub 'staging.betongromantiker.se.s3.${AWS::Region}.amazonaws.com'
+            OriginAccessControlId: !Ref StagingDistributionOriginAccessControl
+            S3OriginConfig: {}
+        Comment: Staging for betongromantiker.se
+        Aliases:
+          - staging.betongromantiker.se
+          - staging.betongromantik.se
+          - staging.concreteromantic.com
+          - staging.concreteromance.com
+        ViewerCertificate:
+          AcmCertificateArn: arn:aws:acm:us-east-1:113542831511:certificate/6e84e648-2b8c-48e5-8430-fba457042153
+          SslSupportMethod: sni-only
+          MinimumProtocolVersion: TLSv1.2_2021
+        DefaultRootObject: index.html
+        DefaultCacheBehavior:
+          Compress: true
+          TargetOriginId: betongromantiker-staging-s3
+          ViewerProtocolPolicy: redirect-to-https
+          CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6 # https://console.aws.amazon.com/cloudfront/v4/home#/policies/cache/658327ea-f89d-4fab-a63d-7e88639e58f6
+        CacheBehaviors:
+          - PathPattern: analytics.js
+            TargetOriginId: betongromantiker-staging-s3
+            ViewerProtocolPolicy: redirect-to-https
+            CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6 # https://console.aws.amazon.com/cloudfront/v4/home#/policies/cache/658327ea-f89d-4fab-a63d-7e88639e58f6
+            AllowedMethods: [HEAD, DELETE, POST, GET, OPTIONS, PUT, PATCH]
+            FunctionAssociations:
+              - EventType: viewer-request
+                FunctionARN: !GetAtt AnalyticsFunction.FunctionARN
+        PriceClass: PriceClass_100
+        HttpVersion: http2
+        Logging:
+          Bucket: !Sub 'iconara-s3-${AWS::Region}.s3.amazonaws.com'
+          Prefix: logs/staging.betongromantiker.se/
+
+  StagingDistributionOriginAccessControl:
+    Type: AWS::CloudFront::OriginAccessControl
+    Properties:
+      OriginAccessControlConfig:
+        Name: betongromantiker-staging-s3-access-control
+        OriginAccessControlOriginType: s3
+        SigningBehavior: always
+        SigningProtocol: sigv4
+
+  AnalyticsFunction:
+    Type: AWS::CloudFront::Function
+    Properties:
+      Name: !Sub '${AWS::StackName}-analytics-fn'
+      FunctionConfig:
+        Comment: Responds 200 OK to all requests
+        Runtime: cloudfront-js-2.0
+      FunctionCode: |
+        function handler(event) {
+          return {
+            statusCode: 200,
+            statusDescription: 'OK',
+          }
+        }
+      AutoPublish: true
+
   HostedZone:
     Type: AWS::Route53::HostedZone
     DeletionPolicy: Retain
     UpdateReplacePolicy: Retain
     Properties:
       Name: betongromantiker.se.
+
   HostedZoneBetongromantikSe:
     Type: AWS::Route53::HostedZone
     DeletionPolicy: Retain
     UpdateReplacePolicy: Retain
     Properties:
       Name: betongromantik.se.
+
   HostedZoneConcreteromanticCom:
     Type: AWS::Route53::HostedZone
     DeletionPolicy: Retain
     UpdateReplacePolicy: Retain
     Properties:
       Name: concreteromantic.com.
+
   HostedZoneConcreteromanceCom:
     Type: AWS::Route53::HostedZone
     DeletionPolicy: Retain
     UpdateReplacePolicy: Retain
     Properties:
       Name: concreteromance.com.
+
   DnsRecords:
     Type: AWS::Route53::RecordSetGroup
     Properties:
@@ -84,11 +180,17 @@ Resources:
           AliasTarget:
             HostedZoneId: Z2FDTNDATAQYW2
             DNSName: !GetAtt Distribution.DomainName
+        - Name: staging.betongromantiker.se.
+          Type: A
+          AliasTarget:
+            HostedZoneId: Z2FDTNDATAQYW2
+            DNSName: !GetAtt StagingDistribution.DomainName
         - Name: _735dfd225651742e14fdd741870a415f.betongromantiker.se.
           Type: CNAME
           TTL: '300'
           ResourceRecords:
             - _a5bd106494f9adccf879b59d1f97575a.hkvuiqjoua.acm-validations.aws.
+
   DnsRecordsBetongromantikSe:
     Type: AWS::Route53::RecordSetGroup
     Properties:
@@ -104,11 +206,17 @@ Resources:
           AliasTarget:
             HostedZoneId: Z2FDTNDATAQYW2
             DNSName: !GetAtt Distribution.DomainName
+        - Name: staging.betongromantik.se.
+          Type: A
+          AliasTarget:
+            HostedZoneId: Z2FDTNDATAQYW2
+            DNSName: !GetAtt StagingDistribution.DomainName
         - Name: _d33f76d1fe0d3906caec3039936c7d28.betongromantik.se.
           Type: CNAME
           TTL: '300'
           ResourceRecords:
             - _5507adaa324ac71122fba0e38b2d306b.duyqrilejt.acm-validations.aws.
+
   DnsRecordsConcreteromanticCom:
     Type: AWS::Route53::RecordSetGroup
     Properties:
@@ -124,11 +232,17 @@ Resources:
           AliasTarget:
             HostedZoneId: Z2FDTNDATAQYW2
             DNSName: !GetAtt Distribution.DomainName
+        - Name: staging.concreteromantic.com.
+          Type: A
+          AliasTarget:
+            HostedZoneId: Z2FDTNDATAQYW2
+            DNSName: !GetAtt StagingDistribution.DomainName
         - Name: _3dbef25c1bd728c99dcfe70838266308.concreteromantic.com.
           Type: CNAME
           TTL: '300'
           ResourceRecords:
             - _7def4b61af074fd175b0ab504978e5f3.duyqrilejt.acm-validations.aws.
+
   DnsRecordsConcreteromanceCom:
     Type: AWS::Route53::RecordSetGroup
     Properties:
@@ -144,11 +258,17 @@ Resources:
           AliasTarget:
             HostedZoneId: Z2FDTNDATAQYW2
             DNSName: !GetAtt Distribution.DomainName
+        - Name: staging.concreteromance.com.
+          Type: A
+          AliasTarget:
+            HostedZoneId: Z2FDTNDATAQYW2
+            DNSName: !GetAtt StagingDistribution.DomainName
         - Name: _eb941b63d515cc5fb2fe76b6f0ff3274.concreteromance.com.
           Type: CNAME
           TTL: '300'
           ResourceRecords:
             - _6fc62e21247271ca80557716026a17ef.duyqrilejt.acm-validations.aws.
+
   GoogleAppsRecords:
     Type: AWS::Route53::RecordSetGroup
     Properties:
@@ -168,6 +288,7 @@ Resources:
             - '5 alt2.aspmx.l.google.com.'
             - '10 aspmx2.googlemail.com.'
             - '10 aspmx3.googlemail.com.'
+
   GoogleAppsRecordsBetongromantikSe:
     Type: AWS::Route53::RecordSetGroup
     Properties:
@@ -187,3 +308,7 @@ Resources:
             - '5 alt2.aspmx.l.google.com.'
             - '10 aspmx2.googlemail.com.'
             - '10 aspmx3.googlemail.com.'
+
+Outputs:
+  StagingDomain:
+    Value: !GetAtt StagingDistribution.DomainName
