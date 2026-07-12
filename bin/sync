@@ -26,6 +26,16 @@ aws s3 sync \
   --exclude '*/.DS_Store' \
   --exclude '.gitignore' \
   --exclude '*/.gitignore' \
+  --exclude '*.jpg' \
+  --exclude '*.png' \
+  'dist' \
+  "s3://$bucket_name/"
+
+aws s3 sync \
+  --size-only \
+  --exclude '*' \
+  --include '*.jpg' \
+  --include '*.png' \
   'dist' \
   "s3://$bucket_name/"
 
