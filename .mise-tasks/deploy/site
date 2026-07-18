@@ -1,10 +1,8 @@
 #!/usr/bin/env bash
 
-#MISE depends = ["npm-build"]
+#MISE depends = ["build:site"]
 
 set -euo pipefail
-
-cd "$(dirname "$0")/.."
 
 stack_name=$(perl -ne '/stack_name\s*=\s*"(.+?)"/ && print "$1\n"' < samconfig.toml | head -n 1)
 region=$(perl -ne '/region\s*=\s*"(.+?)"/ && print "$1\n"' < samconfig.toml | head -n 1)
