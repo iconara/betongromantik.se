@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+
+#MISE depends = ["build:site"]
+
+set -euo pipefail
+
+stack_name=$(perl -ne '/stack_name\s*=\s*"(.+?)"/ && print "$1\n"' < samconfig.toml | head -n 1)
+region=$(perl -ne '/region\s*=\s*"(.+?)"/ && print "$1\n"' < samconfig.toml | head -n 1)
+
+bucket_name=$(aws cloudformation describe-stacks \
+  --region "$region" \
+  --stack-name "$stack_name" \
+  --query "Stacks[0].Outputs[?OutputKey=='BucketName'].OutputValue" \
+  --output text)
+
+distribution_id=$(aws cloudformation describe-stacks \
+  --region "$region" \
+  --stack-name "$stack_name" \
+  --query "Stacks[0].Outputs[?OutputKey=='DistributionId'].OutputValue" \
+  --output text)
+
+echo "Syncing dist/ to s3://$bucket_name/"
+
+aws s3 sync \
+  --size-only \
+  --exclude '.DS_Store' --exclude '*/.DS_Store' \
+  --include '*.jpg' --include '*.png' \
+  dist/ "s3://$bucket_name/"
+
+echo "Invalidating CloudFront distribution $distribution_id"
+
+aws cloudfront create-invalidation \
+  --distribution-id "$distribution_id" \
+  --paths '/*' \
+  --output text

@@ -1,0 +1,26 @@
+[tools]
+aws-sam = { version = "latest", symlink_bins = "true" }
+node = "latest"
+
+[tasks.server]
+alias = "dev"
+run = "npm run vite"
+
+[tasks.preview]
+run = "npm run preview"
+
+[tasks."build:site"]
+run = "npm run build"
+
+[tasks."build:sam"]
+run = "sam build"
+
+[tasks.build]
+depends = ["build:sam", "build:site"]
+
+[tasks."deploy:infrastructure"]
+depends = ["build:sam"]
+run = "sam deploy"
+
+[tasks.deploy]
+depends = ["deploy:site", "deploy:infrastructure"]

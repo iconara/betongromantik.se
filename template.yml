@@ -1,203 +1,111 @@
-AWSTemplateFormatVersion: 2010-09-09
+AWSTemplateFormatVersion: '2010-09-09'
 
 Resources:
   Bucket:
     Type: AWS::S3::Bucket
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
     Properties:
-      BucketName: betongromantiker.se
-      WebsiteConfiguration:
-        IndexDocument: index.html
-        ErrorDocument: error.html
+      BucketName: betongromantik.se
 
-  StagingBucket:
-    Type: AWS::S3::Bucket
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
-    Properties:
-      BucketName: staging.betongromantiker.se
-
-  StagingBucketPolicy:
+  BucketPolicy:
     Type: AWS::S3::BucketPolicy
     Properties:
-      Bucket: !Ref StagingBucket
+      Bucket: !Ref Bucket
       PolicyDocument:
         Version: '2012-10-17'
         Statement:
-        - Effect: Allow
-          Action: s3:GetObject
-          Principal:
-            Service: cloudfront.amazonaws.com
-          Resource: !Sub '${StagingBucket.Arn}/*'
-          Condition:
-            StringEquals:
-              AWS:SourceArn: !Sub 'arn:aws:cloudfront::${AWS::AccountId}:distribution/${StagingDistribution}'
+          - Effect: Allow
+            Action: s3:GetObject
+            Principal:
+              Service: cloudfront.amazonaws.com
+            Resource: !Sub '${Bucket.Arn}/*'
+            Condition:
+              StringEquals:
+                AWS:SourceArn: !Sub 'arn:aws:cloudfront::${AWS::AccountId}:distribution/${Distribution}'
+
+  OriginAccessControl:
+    Type: AWS::CloudFront::OriginAccessControl
+    Properties:
+      OriginAccessControlConfig:
+        Name: betongromantik-se-oac
+        OriginAccessControlOriginType: s3
+        SigningBehavior: always
+        SigningProtocol: sigv4
 
   Distribution:
     Type: AWS::CloudFront::Distribution
     Properties:
       DistributionConfig:
         Enabled: true
-        Origins:
-          - Id: betongromantiker-s3
-            DomainName: betongromantiker.se.s3-website-eu-west-1.amazonaws.com
-            CustomOriginConfig:
-              OriginProtocolPolicy: http-only
-        Comment: Hosting of betongromantiker.se
+        Comment: betongromantik.se
+        DefaultRootObject: index.html
+        HttpVersion: http2and3
         Aliases:
-          - betongromantiker.se
-          - www.betongromantiker.se
           - betongromantik.se
           - www.betongromantik.se
-          - concreteromantic.com
-          - www.concreteromantic.com
-          - concreteromance.com
-          - www.concreteromance.com
-        ViewerCertificate:
-          AcmCertificateArn: arn:aws:acm:us-east-1:113542831511:certificate/6e84e648-2b8c-48e5-8430-fba457042153
-          SslSupportMethod: sni-only
-          MinimumProtocolVersion: TLSv1.2_2018
-        DefaultCacheBehavior:
-          TargetOriginId: betongromantiker-s3
-          ForwardedValues:
-            QueryString: false
-            Cookies:
-              Forward: none
-          ViewerProtocolPolicy: allow-all
-        PriceClass: PriceClass_100
-        HttpVersion: http2
-        Logging:
-          Bucket: !Sub 'iconara-s3-${AWS::Region}.s3.amazonaws.com'
-          Prefix: logs/betongromantiker.se/
-
-  StagingDistribution:
-    Type: AWS::CloudFront::Distribution
-    Properties:
-      DistributionConfig:
-        Enabled: true
-        Origins:
-          - Id: betongromantiker-staging-s3
-            DomainName: !Sub 'staging.betongromantiker.se.s3.${AWS::Region}.amazonaws.com'
-            OriginAccessControlId: !Ref StagingDistributionOriginAccessControl
-            S3OriginConfig: {}
-        Comment: Staging for betongromantiker.se
-        Aliases:
-          - staging.betongromantiker.se
-          - staging.betongromantik.se
-          - staging.concreteromantic.com
-          - staging.concreteromance.com
         ViewerCertificate:
           AcmCertificateArn: arn:aws:acm:us-east-1:113542831511:certificate/6e84e648-2b8c-48e5-8430-fba457042153
           SslSupportMethod: sni-only
           MinimumProtocolVersion: TLSv1.2_2021
-        DefaultRootObject: index.html
+        Origins:
+          - Id: s3
+            DomainName: !GetAtt Bucket.RegionalDomainName
+            OriginAccessControlId: !Ref OriginAccessControl
+            S3OriginConfig:
+              OriginAccessIdentity: ''
         DefaultCacheBehavior:
-          Compress: true
-          TargetOriginId: betongromantiker-staging-s3
+          TargetOriginId: s3
           ViewerProtocolPolicy: redirect-to-https
-          CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6 # https://console.aws.amazon.com/cloudfront/v4/home#/policies/cache/658327ea-f89d-4fab-a63d-7e88639e58f6
-        CacheBehaviors:
-          - PathPattern: analytics.js
-            TargetOriginId: betongromantiker-staging-s3
-            ViewerProtocolPolicy: redirect-to-https
-            CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6 # https://console.aws.amazon.com/cloudfront/v4/home#/policies/cache/658327ea-f89d-4fab-a63d-7e88639e58f6
-            AllowedMethods: [HEAD, DELETE, POST, GET, OPTIONS, PUT, PATCH]
-            FunctionAssociations:
-              - EventType: viewer-request
-                FunctionARN: !GetAtt AnalyticsFunction.FunctionARN
-        PriceClass: PriceClass_100
-        HttpVersion: http2
-        Logging:
-          Bucket: !Sub 'iconara-s3-${AWS::Region}.s3.amazonaws.com'
-          Prefix: logs/staging.betongromantiker.se/
+          Compress: true
+          CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6
+          FunctionAssociations:
+            - EventType: viewer-request
+              FunctionARN: !GetAtt WwwRedirectFunction.FunctionMetadata.FunctionARN
+        CustomErrorResponses:
+          - ErrorCode: 403
+            ResponseCode: 200
+            ResponsePagePath: /index.html
+          - ErrorCode: 404
+            ResponseCode: 200
+            ResponsePagePath: /index.html
 
-  StagingDistributionOriginAccessControl:
-    Type: AWS::CloudFront::OriginAccessControl
-    Properties:
-      OriginAccessControlConfig:
-        Name: betongromantiker-staging-s3-access-control
-        OriginAccessControlOriginType: s3
-        SigningBehavior: always
-        SigningProtocol: sigv4
-
-  AnalyticsFunction:
+  WwwRedirectFunction:
     Type: AWS::CloudFront::Function
     Properties:
-      Name: !Sub '${AWS::StackName}-analytics-fn'
+      Name: !Sub '${AWS::StackName}-www-redirect'
       FunctionConfig:
-        Comment: Responds 200 OK to all requests
+        Comment: Redirect www.betongromantik.se to apex
         Runtime: cloudfront-js-2.0
       FunctionCode: |
         function handler(event) {
-          return {
-            statusCode: 200,
-            statusDescription: 'OK',
+          var host = event.request.headers.host.value;
+          if (host.startsWith('www.')) {
+            return {
+              statusCode: 301,
+              statusDescription: 'Moved Permanently',
+              headers: { location: { value: 'https://betongromantik.se' + event.request.uri } }
+            };
           }
+          return event.request;
         }
       AutoPublish: true
 
   HostedZone:
     Type: AWS::Route53::HostedZone
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
-    Properties:
-      Name: betongromantiker.se.
-
-  HostedZoneBetongromantikSe:
-    Type: AWS::Route53::HostedZone
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
     Properties:
       Name: betongromantik.se.
-
-  HostedZoneConcreteromanticCom:
-    Type: AWS::Route53::HostedZone
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
-    Properties:
-      Name: concreteromantic.com.
-
-  HostedZoneConcreteromanceCom:
-    Type: AWS::Route53::HostedZone
-    DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain
-    Properties:
-      Name: concreteromance.com.
 
   DnsRecords:
     Type: AWS::Route53::RecordSetGroup
     Properties:
       HostedZoneId: !Ref HostedZone
       RecordSets:
-        - Name: betongromantiker.se.
-          Type: A
-          AliasTarget:
-            HostedZoneId: Z2FDTNDATAQYW2
-            DNSName: !GetAtt Distribution.DomainName
-        - Name: www.betongromantiker.se.
-          Type: A
-          AliasTarget:
-            HostedZoneId: Z2FDTNDATAQYW2
-            DNSName: !GetAtt Distribution.DomainName
-        - Name: staging.betongromantiker.se.
-          Type: A
-          AliasTarget:
-            HostedZoneId: Z2FDTNDATAQYW2
-            DNSName: !GetAtt StagingDistribution.DomainName
-        - Name: _735dfd225651742e14fdd741870a415f.betongromantiker.se.
-          Type: CNAME
-          TTL: '300'
-          ResourceRecords:
-            - _a5bd106494f9adccf879b59d1f97575a.hkvuiqjoua.acm-validations.aws.
-
-  DnsRecordsBetongromantikSe:
-    Type: AWS::Route53::RecordSetGroup
-    Properties:
-      HostedZoneId: !Ref HostedZoneBetongromantikSe
-      RecordSets:
         - Name: betongromantik.se.
           Type: A
+          AliasTarget:
+            HostedZoneId: Z2FDTNDATAQYW2
+            DNSName: !GetAtt Distribution.DomainName
+        - Name: betongromantik.se.
+          Type: AAAA
           AliasTarget:
             HostedZoneId: Z2FDTNDATAQYW2
             DNSName: !GetAtt Distribution.DomainName
@@ -206,93 +114,27 @@ Resources:
           AliasTarget:
             HostedZoneId: Z2FDTNDATAQYW2
             DNSName: !GetAtt Distribution.DomainName
-        - Name: staging.betongromantik.se.
-          Type: A
+        - Name: www.betongromantik.se.
+          Type: AAAA
           AliasTarget:
             HostedZoneId: Z2FDTNDATAQYW2
-            DNSName: !GetAtt StagingDistribution.DomainName
+            DNSName: !GetAtt Distribution.DomainName
+
+  AcmDnsRecords:
+    Type: AWS::Route53::RecordSetGroup
+    Properties:
+      HostedZoneId: !Ref HostedZone
+      RecordSets:
         - Name: _d33f76d1fe0d3906caec3039936c7d28.betongromantik.se.
           Type: CNAME
           TTL: '300'
           ResourceRecords:
             - _5507adaa324ac71122fba0e38b2d306b.duyqrilejt.acm-validations.aws.
 
-  DnsRecordsConcreteromanticCom:
-    Type: AWS::Route53::RecordSetGroup
-    Properties:
-      HostedZoneId: !Ref HostedZoneConcreteromanticCom
-      RecordSets:
-        - Name: concreteromantic.com.
-          Type: A
-          AliasTarget:
-            HostedZoneId: Z2FDTNDATAQYW2
-            DNSName: !GetAtt Distribution.DomainName
-        - Name: www.concreteromantic.com.
-          Type: A
-          AliasTarget:
-            HostedZoneId: Z2FDTNDATAQYW2
-            DNSName: !GetAtt Distribution.DomainName
-        - Name: staging.concreteromantic.com.
-          Type: A
-          AliasTarget:
-            HostedZoneId: Z2FDTNDATAQYW2
-            DNSName: !GetAtt StagingDistribution.DomainName
-        - Name: _3dbef25c1bd728c99dcfe70838266308.concreteromantic.com.
-          Type: CNAME
-          TTL: '300'
-          ResourceRecords:
-            - _7def4b61af074fd175b0ab504978e5f3.duyqrilejt.acm-validations.aws.
-
-  DnsRecordsConcreteromanceCom:
-    Type: AWS::Route53::RecordSetGroup
-    Properties:
-      HostedZoneId: !Ref HostedZoneConcreteromanceCom
-      RecordSets:
-        - Name: concreteromance.com.
-          Type: A
-          AliasTarget:
-            HostedZoneId: Z2FDTNDATAQYW2
-            DNSName: !GetAtt Distribution.DomainName
-        - Name: www.concreteromance.com.
-          Type: A
-          AliasTarget:
-            HostedZoneId: Z2FDTNDATAQYW2
-            DNSName: !GetAtt Distribution.DomainName
-        - Name: staging.concreteromance.com.
-          Type: A
-          AliasTarget:
-            HostedZoneId: Z2FDTNDATAQYW2
-            DNSName: !GetAtt StagingDistribution.DomainName
-        - Name: _eb941b63d515cc5fb2fe76b6f0ff3274.concreteromance.com.
-          Type: CNAME
-          TTL: '300'
-          ResourceRecords:
-            - _6fc62e21247271ca80557716026a17ef.duyqrilejt.acm-validations.aws.
-
-  GoogleAppsRecords:
+  GoogleAppsDnsRecords:
     Type: AWS::Route53::RecordSetGroup
     Properties:
       HostedZoneId: !Ref HostedZone
-      RecordSets:
-        - Name: betongromantiker.se.
-          Type: TXT
-          TTL: '300'
-          ResourceRecords:
-            - '"google-site-verification=_nmDxWH8k53cwJDda9edFPl4cu0suQMEg0NVwLBUICw."'
-        - Name: betongromantiker.se.
-          Type: MX
-          TTL: '300'
-          ResourceRecords:
-            - '1 aspmx.l.google.com.'
-            - '5 alt1.aspmx.l.google.com.'
-            - '5 alt2.aspmx.l.google.com.'
-            - '10 aspmx2.googlemail.com.'
-            - '10 aspmx3.googlemail.com.'
-
-  GoogleAppsRecordsBetongromantikSe:
-    Type: AWS::Route53::RecordSetGroup
-    Properties:
-      HostedZoneId: !Ref HostedZoneBetongromantikSe
       RecordSets:
         - Name: betongromantik.se.
           Type: TXT
@@ -310,5 +152,9 @@ Resources:
             - '10 aspmx3.googlemail.com.'
 
 Outputs:
-  StagingDomain:
-    Value: !GetAtt StagingDistribution.DomainName
+  DistributionDomain:
+    Value: !GetAtt Distribution.DomainName
+  DistributionId:
+    Value: !Ref Distribution
+  BucketName:
+    Value: !Ref Bucket
