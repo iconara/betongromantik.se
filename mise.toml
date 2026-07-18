@@ -1,0 +1,18 @@
+[tools]
+node = "latest"
+
+[tasks.dev]
+run = "npm run dev"
+
+[tasks.sam-build]
+run = "sam build"
+
+[tasks.npm-build]
+run = "npm run build"
+
+[tasks.sam-deploy]
+depends = ["sam-build"]
+run = "sam deploy"
+
+[tasks.deploy]
+depends = ["sync", "sam-deploy"]
