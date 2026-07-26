@@ -5,7 +5,7 @@ node = "latest"
 
 [tasks.server]
 alias = "dev"
-run = "npm run vite"
+run = "npm run dev"
 
 [tasks.preview]
 run = "npm run preview"
