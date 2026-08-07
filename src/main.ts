@@ -92,7 +92,7 @@ function pageInstagram(): string {
         <a href="https://instagram.com/concreteromantic">
           <img src="${concreteromanticQr}" alt="@concreteromantic på Instagram" />
         </a>
-        <p>Dagliga bilder</p>
+        <p>Dagliga bilder 2015–2025, sporadiska bilder 2026–</p>
       </section>
       <section>
         <a href="https://instagram.com/betongromantik">
