@@ -73,10 +73,12 @@ header {
   }
 }
 
-header a:has(.logo) {
-  display: block;
-  height: 100%;
-  width: auto;
+header {
+  a:has(.logo) {
+    display: block;
+    height: 100%;
+    width: auto;
+  }
 
   .logo {
     height: 100%;
@@ -266,8 +268,24 @@ p {
     --card-min: 9em;
   }
 
+  #root {
+    grid-template-rows:
+      [header-row]
+      5rem
+      [content-row]
+      1fr
+      [footer-row]
+      1em;
+  }
+
+  header {
+    nav {
+      font-size: 1rem !important;
+    }
+  }
+
   .series {
-    flex-direction: column;
+    display: block !important;
     gap: var(--gap);
 
     .details {
