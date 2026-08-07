@@ -66,6 +66,10 @@ header {
     gap: var(--gap);
     font-size: clamp(1.2rem, 3vw, 1.8rem);
     text-transform: uppercase;
+
+    a {
+      text-decoration: none;
+    }
   }
 }
 
@@ -107,8 +111,11 @@ h3 {
 }
 
 a {
-  text-decoration: none;
   color: var(--text);
+
+  &[target='_blank']::after {
+    content: ' ↗';
+  }
 }
 
 p {
@@ -243,6 +250,14 @@ p {
   p {
     font-size: 1.5rem;
     margin-top: 1rem;
+  }
+}
+
+.shop {
+  section {
+    max-width: 30rem;
+    margin-top: 5rem;
+    margin-inline: auto;
   }
 }
 

@@ -104,6 +104,26 @@ function pageInstagram(): string {
   `
 }
 
+function pageShop(): string {
+  return `
+    <main class="shop">
+      <section>
+        <p>
+          Här kan du köpa ett urval av mina bilder i olika format och få dem skickade hem direkt från tryckeriet:
+        </p>
+        <ul>
+          <li><a href="https://www.saal-digital.net/share/JFMVnzC/" target="_blank">Utvalda Gotlandsbilder i affischformat</a></li>
+          <li><a href="https://www.saal-digital.net/share/ENY69iH/" target="_blank">Vykortsmotiv i större format</a></li>
+        </ul>
+        <p>
+          Om du saknar någon bild du sett på min <a href="https://instagram.com/concreteromantic" target="_blank">Instagram</a>,
+          eller på en marknad, skicka mig ett meddelande på Instagram så lägger jag till den i shoppen.
+        </p>
+      </section>
+    </main>
+  `
+}
+
 function render(): void {
   const path = location.pathname.replace(/\/$/, '') || '/'
   const root = document.getElementById('root')!
@@ -116,6 +136,9 @@ function render(): void {
     case '/instagram':
       page = pageInstagram()
       break
+    case '/shop':
+      page = pageShop()
+      break
     default:
       page = pageHome()
   }
@@ -126,6 +149,7 @@ function render(): void {
       <nav>
         <a href="/vykort">Vykort</a>
         <a href="/instagram">Instagram</a>
+        <a href="/shop">Shop</a>
       </nav>
     </header>
     ${page}
