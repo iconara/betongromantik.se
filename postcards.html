@@ -32,7 +32,7 @@ title: Vykort
   {% for image in series.images %}
     <div id="lb-{{ series.id }}-{{ image.id }}" class="lightbox">
       <a href="#" class="backdrop" aria-label="Stäng">
-        <img src="{{ "/vykort/" | append: series.id | append: "/" | append: image.id | append: "-sm.jpg" | relative_url }}" alt="{{ image.description }}" />
+        <img src="{{ "/vykort/" | append: series.id | append: "/" | append: image.id | append: "-sm.jpg" | relative_url }}" alt="{{ image.description }}"/>
       </a>
       <a href="#" class="close" aria-label="Stäng">&times;</a>
       <p class="caption">{{ image.description }}</p>
