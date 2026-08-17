@@ -19,21 +19,21 @@ distribution_id=$(aws cloudformation describe-stacks \
   --query "Stacks[0].Outputs[?OutputKey=='DistributionId'].OutputValue" \
   --output text)
 
-echo "Syncing dist/ to s3://$bucket_name/"
+echo "Syncing _site/ to s3://$bucket_name/"
 
 aws s3 sync \
   --exclude '.DS_Store' \
   --exclude '*/.DS_Store' \
   --exclude '*.jpg' \
   --exclude '*.png' \
-  dist/ "s3://$bucket_name/"
+  _site/ "s3://$bucket_name/"
 
 aws s3 sync \
   --size-only \
   --exclude '*' \
   --include '*.jpg' \
   --include '*.png' \
-  dist/ "s3://$bucket_name/"
+  _site/ "s3://$bucket_name/"
 
 echo "Invalidating CloudFront distribution $distribution_id"
 

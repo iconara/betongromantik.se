@@ -1,17 +1,15 @@
 [tools]
 aws-cli = { version = "latest", symlink_bins = "true" }
 aws-sam = { version = "latest", symlink_bins = "true" }
-node = "latest"
+"gem:jekyll" = "latest"
+ruby = "latest"
 
 [tasks.server]
 alias = "dev"
-run = "npm run dev"
-
-[tasks.preview]
-run = "npm run preview"
+run = "jekyll serve"
 
 [tasks."build:site"]
-run = "npm run build"
+run = "jekyll build"
 
 [tasks."build:sam"]
 run = "sam build"
@@ -25,3 +23,6 @@ run = "sam deploy"
 
 [tasks.deploy]
 depends = ["deploy:site", "deploy:infrastructure"]
+
+[tasks."clean:site"]
+run = "jekyll clean"
