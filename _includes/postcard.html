@@ -1,0 +1,5 @@
+<figure>
+  <img src="{{ "/vykort/" | append: include.series_id | append: "/" | append: include.image_id | append: "-sm.jpg" | relative_url }}"
+       alt="{{ include.image_description | escape }}"
+       loading="lazy" />
+</figure>
