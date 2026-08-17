@@ -16,11 +16,10 @@ title: Vykort
     <div class="images">
     {% for image in series.images %}
       <a href="#lb-{{ series.id }}-{{ image.id }}" class="postcard">
-        <figure>
-          <img src="{{ "/vykort/" | append: series.id | append: "/" | append: image.id | append: "-sm.jpg" | relative_url }}"
-               alt="{{ image.description | escape }}"
-               loading="lazy" />
-        </figure>
+        {% include postcard.html
+                   series_id=series.id
+                   image_id=image.id
+                   image_description=image.description %}
       </a>
     {% endfor %}
     </div>
@@ -32,8 +31,10 @@ title: Vykort
   {% for image in series.images %}
     <div id="lb-{{ series.id }}-{{ image.id }}" class="lightbox">
       <a href="#" class="backdrop" aria-label="Stäng">
-        <img src="{{ "/vykort/" | append: series.id | append: "/" | append: image.id | append: "-sm.jpg" | relative_url }}"
-             alt="{{ image.description | escape }}"/>
+        {% include postcard.html
+                   series_id=series.id
+                   image_id=image.id
+                   image_description=image.description %}
       </a>
       <a href="#" class="close" aria-label="Stäng">&times;</a>
       <p class="caption">{{ image.description | escape }}</p>
