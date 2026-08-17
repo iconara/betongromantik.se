@@ -9,16 +9,16 @@ title: Vykort
 {% for series in reverse_postcards %}
   <section class="series">
     <div class="details">
-      <h2>{{ series.name }}</h2>
-      <h3>{{ series.release }}</h3>
-      <p>{{ series.description }}</p>
+      <h2>{{ series.name | escape }}</h2>
+      <h3>{{ series.release | escape }}</h3>
+      <p>{{ series.description | escape }}</p>
     </div>
     <div class="images">
     {% for image in series.images %}
       <a href="#lb-{{ series.id }}-{{ image.id }}" class="postcard">
         <figure>
           <img src="{{ "/vykort/" | append: series.id | append: "/" | append: image.id | append: "-sm.jpg" | relative_url }}"
-               alt="{{ image.description }}"
+               alt="{{ image.description | escape }}"
                loading="lazy" />
         </figure>
       </a>
@@ -32,10 +32,11 @@ title: Vykort
   {% for image in series.images %}
     <div id="lb-{{ series.id }}-{{ image.id }}" class="lightbox">
       <a href="#" class="backdrop" aria-label="Stäng">
-        <img src="{{ "/vykort/" | append: series.id | append: "/" | append: image.id | append: "-sm.jpg" | relative_url }}" alt="{{ image.description }}"/>
+        <img src="{{ "/vykort/" | append: series.id | append: "/" | append: image.id | append: "-sm.jpg" | relative_url }}"
+             alt="{{ image.description | escape }}"/>
       </a>
       <a href="#" class="close" aria-label="Stäng">&times;</a>
-      <p class="caption">{{ image.description }}</p>
+      <p class="caption">{{ image.description | escape }}</p>
     </div>
   {% endfor %}
 {% endfor %}
