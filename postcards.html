@@ -1,0 +1,43 @@
+---
+layout: default
+permalink: /vykort/
+title: Vykort
+---
+
+<main class="gallery">
+{% assign reverse_postcards = site.data.postcards | reverse %}
+{% for series in reverse_postcards %}
+  <section class="series">
+    <div class="details">
+      <h2>{{ series.name | escape }}</h2>
+      <h3>{{ series.release | escape }}</h3>
+      <p>{{ series.description | escape }}</p>
+    </div>
+    <div class="images">
+    {% for image in series.images %}
+      <a href="#lb-{{ series.id }}-{{ image.id }}" class="postcard">
+        {% include postcard.html
+                   series_id=series.id
+                   image_id=image.id
+                   image_description=image.description %}
+      </a>
+    {% endfor %}
+    </div>
+  </section>
+{% endfor %}
+</main>
+
+{% for series in site.data.postcards %}
+  {% for image in series.images %}
+    <div id="lb-{{ series.id }}-{{ image.id }}" class="lightbox">
+      <a href="#" class="backdrop" aria-label="Stäng">
+        {% include postcard.html
+                   series_id=series.id
+                   image_id=image.id
+                   image_description=image.description %}
+      </a>
+      <a href="#" class="close" aria-label="Stäng">&times;</a>
+      <p class="caption">{{ image.description | escape }}</p>
+    </div>
+  {% endfor %}
+{% endfor %}
