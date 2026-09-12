@@ -1,5 +1,9 @@
 AWSTemplateFormatVersion: '2010-09-09'
 
+Parameters:
+  WebACLArn:
+    Type: String
+
 Resources:
   Bucket:
     Type: AWS::S3::Bucket
@@ -46,6 +50,7 @@ Resources:
           AcmCertificateArn: arn:aws:acm:us-east-1:113542831511:certificate/6e84e648-2b8c-48e5-8430-fba457042153
           SslSupportMethod: sni-only
           MinimumProtocolVersion: TLSv1.2_2021
+        WebACLId: !Ref WebACLArn
         Origins:
           - Id: s3
             DomainName: !GetAtt Bucket.RegionalDomainName
