@@ -1,0 +1,14 @@
+url: "https://betongromantik.se/"
+title: "Betongromantik"
+lang: sv
+exclude:
+  - .jj
+  - mise.*
+  - samconfig.*
+  - template.yml
+  - tmp
+defaults:
+  - scope:
+      path: "public/vykort"
+    values:
+      permalink: vykort

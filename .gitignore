@@ -1,4 +1,5 @@
 # Build
+/_site
 /dist
 /lib
 /lib-types
@@ -12,6 +13,7 @@ node_modules
 
 # Cache
 .cache
+.jekyll-cache
 .mf
 .rollup.cache
 tsconfig.tsbuildinfo
@@ -29,7 +31,6 @@ lerna-debug.log*
 .vscode/*
 !.vscode/launch.json
 !.vscode/*.code-snippets
-
 .idea
 .DS_Store
 *.suo
@@ -37,6 +38,7 @@ lerna-debug.log*
 *.njsproj
 *.sln
 *.sw?
+.zed
 
 # Yarn
 .yarn/*
