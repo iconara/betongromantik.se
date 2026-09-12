@@ -19,7 +19,7 @@ depends = ["build:sam", "build:site"]
 
 [tasks."deploy:infrastructure"]
 depends = ["build:sam"]
-run = "sam deploy"
+run = "sam deploy --no-fail-on-empty-changeset"
 
 [tasks.deploy]
 depends = ["deploy:site", "deploy:infrastructure"]
